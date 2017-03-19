@@ -1,0 +1,27 @@
+{
+    "name": "usox/hacore",
+    "type": "library",
+    "description": "Read json configs in strict mode",
+    "keywords": ["hack", "config", "json", "hacklang", "hhvm"],
+    "license": "MIT",
+    "homepage": "https://github.com/usox/hacore",
+    "authors": [
+        {
+            "name": "Daniel Jakob",
+            "email": "dev@usox.org",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "hhvm": ">=3.13"
+    },
+    "require-dev": {
+	"hackpack/hackunit": "^1.0",
+	"mockery/mockery": "^0"
+    },
+    "autoload": {
+        "psr-4": {
+		"Usox\\Hacore\\": "src/"
+	}
+    }
+}
