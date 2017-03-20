@@ -1,4 +1,4 @@
-<?hh // strict
+<?hh // partial
 namespace Usox\Hacore;
 
 use HackPack\HackUnit\Contract\Assert;
