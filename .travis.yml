@@ -6,10 +6,9 @@ group: edge
 php:
   - hhvm
   - hhvm-nightly
-  - hhvm-3.15
 
 before_script: composer install
 
 script:
   - hh_server --check $(pwd)
-  - make tests
+  - composer run-script tests

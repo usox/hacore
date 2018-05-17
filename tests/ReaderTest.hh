@@ -1,118 +1,121 @@
-<?hh // partial
+<?hh // strict
 namespace Usox\Hacore;
 
+use function Facebook\FBExpect\expect;
+use HH\Lib\Str;
 use HackPack\HackUnit\Contract\Assert;
 
-class ReaderTest {
+class ReaderTest extends \PHPUnit_Framework_TestCase {
 
-	<<Test>>
-	public function loadThrowsExceptionIfFileDoesNotExist(Assert $assert): void {
+	public function testLoadThrowsExceptionIfFileDoesNotExist(): void {
 		$filename = 'some-file-that-does-not-exist';
 
 		$reader = new Reader();
 
-		$assert->whenCalled(() ==> {
-			$reader->load($filename);
-		})
-		->willThrowClassWithMessage(
+		expect(
+			function () use ($reader, $filename) {
+				$reader->load($filename);
+			}
+		)
+		->toThrow(
 			Exception\ConfigFileNotFoundException::class,
-			sprintf('File \'%s\' not found', $filename)
+			Str\format('File \'%s\' not found', $filename)
 		);
 	}
 
-	<<Test>>
-	public function loadThrowsExceptionIfFileContainsInvalidJson(Assert $assert): void {
+	public function testLoadThrowsExceptionIfFileContainsInvalidJson(): void {
 		$filename = 'tests/config_file_with_invalid_json';
 
 		$reader = new Reader();
 
-		$assert->whenCalled(() ==> {
-			$reader->load($filename);
-		})
-		->willThrowClassWithMessage(
+		expect(
+			function () use ($reader, $filename) {
+				$reader->load($filename);
+			}
+		)
+		->toThrow(
 			Exception\ConfigLoadingException::class,
 			'Config loading failed: Syntax error'
 		);
 	}
 
-	<<Test>>
-	public function getLeafThrowsExceptionIfConfigIsNotLoaded(Assert $assert): void {
-		$filename = 'tests/config_file_with_valid_json';
-		$key = 'foo-bar';
-
+	public function testGetLeafThrowsExceptionIfConfigIsNotLoaded(): void {
 		$reader = new Reader();
 
-		$assert->whenCalled(() ==> {
-			$reader->getLeaf($key);
-		})
-		->willThrowClass(
+		expect(
+			function () use ($reader) {
+				$reader->getLeaf('foo-bar');
+			}
+		)
+		->toThrow(
 			Exception\ConfigNotLoadedException::class
 		);
 	}
 
-	<<Test>>
-	public function getLeafThrowsExceptionIfKeyDoesNotExist(Assert $assert): void {
+	public function testGetLeafThrowsExceptionIfKeyDoesNotExist(): void {
 		$filename = 'tests/config_file_with_valid_json';
 		$key = 'foo-bar';
 
 		$reader = new Reader();
 		$reader->load($filename);
 
-		$assert->whenCalled(() ==> {
-			$reader->getLeaf($key);
-		})
-		->willThrowClassWithMessage(
+		expect(
+			function () use ($reader, $key) {
+				$reader->getLeaf($key);
+			}
+		)
+		->toThrow(
 			Exception\LeafNotFoundException::class,
-			sprintf('Key \'%s\' not found', $key)
+			Str\format('Key \'%s\' not found', $key)
 		);
 	}
 
-	<<Test>>
-	public function getLeafThrowsExceptionIfLeafIsBranch(Assert $assert): void {
+	public function testGetLeafThrowsExceptionIfLeafIsBranch(): void {
 		$filename = 'tests/config_file_with_valid_json';
 		$key = 'zomg';
 
 		$reader = new Reader();
 		$reader->load($filename);
 
-		$assert->whenCalled(() ==> {
-			$reader->getLeaf($key);
-		})
-		->willThrowClassWithMessage(
+		expect(
+			function () use ($reader, $key) {
+				$reader->getLeaf($key);
+			}
+		)
+		->toThrow(
 			Exception\LeafIsBranchException::class,
-			sprintf('Expected \'%s\' to be a leaf but got a branch', $key)
+			Str\format('Expected \'%s\' to be a leaf but got a branch', $key)
 		);
 	}
 
-	<<Test>>
-	public function getLeafThrowsExceptionIfBranchIsLeaf(Assert $assert): void {
+	public function testGetLeafThrowsExceptionIfBranchIsLeaf(): void {
 		$filename = 'tests/config_file_with_valid_json';
 		$key = 'aggi';
 
 		$reader = new Reader();
 		$reader->load($filename);
 
-		$assert->whenCalled(() ==> {
-			$reader->getBranch($key);
-		})
-		->willThrowClassWithMessage(
+		expect(
+			function () use ($reader, $key) {
+				$reader->getBranch($key);
+			}
+		)
+		->toThrow(
 			Exception\BranchIsLeafException::class,
-			sprintf('Expected \'%s\' to be a branch but got a leaf', $key)
+			Str\format('Expected \'%s\' to be a branch but got a leaf', $key)
 		);
 	}
 
-	<<Test>>
-	public function getLeafReturnsLeafAsString(Assert $assert): void {
+	public function testGetLeafReturnsLeafAsString(): void {
 		$filename = 'tests/config_file_with_valid_json';
 
 		$reader = new Reader();
 		$reader->load($filename);
 
-		$assert->string($reader->getLeaf('aggi'))->is('666');
+		expect($reader->getLeaf('aggi'))->toBeSame('666');
 	}
 
-	<<Test>>
-	public function getBranchReturnsBranchAsReaderInstanceWithConfig(Assert $assert): void {
+	public function testGetBranchReturnsBranchAsReaderInstanceWithConfig(): void {
 		$filename = 'tests/config_file_with_valid_json';
 
 		$reader = new Reader();
@@ -120,6 +123,6 @@ class ReaderTest {
 
 		$branch = $reader->getBranch('zomg');
 
-		$assert->string($branch->getLeaf('dr'))->is('brettermeier');
+		expect($branch->getLeaf('dr'))->toBeSame('brettermeier');
 	}
 }

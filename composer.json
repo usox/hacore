@@ -2,7 +2,13 @@
     "name": "usox/hacore",
     "type": "library",
     "description": "Read json configs in strict mode",
-    "keywords": ["hack", "config", "json", "hacklang", "hhvm"],
+    "keywords": [
+        "hack",
+        "config",
+        "json",
+        "hacklang",
+        "hhvm"
+    ],
     "license": "MIT",
     "homepage": "https://github.com/usox/hacore",
     "authors": [
@@ -13,14 +19,18 @@
         }
     ],
     "require": {
-        "hhvm": ">=3.13"
+        "hhvm": ">=3.24",
+        "hhvm/hsl": "^1.4"
     },
     "require-dev": {
-	"hackpack/hackunit": "^1.0"
+        "facebook/fbexpect": "^1"
     },
     "autoload": {
         "psr-4": {
-		"Usox\\Hacore\\": "src/"
-	}
+            "Usox\\Hacore\\": "src/"
+        }
+    },
+    "scripts": {
+        "tests": "hhvm ./vendor/bin/phpunit -c phpunit.xml"
     }
 }

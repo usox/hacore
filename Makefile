@@ -1,4 +1,4 @@
 tests:force
-	hhvm vendor/bin/hackunit tests
+	hhvm vendor/bin/phpunit -c phpunit.xml
 
 force:

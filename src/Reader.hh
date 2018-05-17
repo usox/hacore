@@ -1,29 +1,31 @@
 <?hh // strict
 namespace Usox\Hacore;
 
+use HH\Lib\{Str, C};
+
 final class Reader implements ReaderInterface {
 
 	public function __construct(private ?Map<string, mixed> $config = null): void {
 	}
 
 	public function load(string $config_file_path): void {
-		$real_file_path = realpath($config_file_path);
+		$real_file_path = \realpath($config_file_path);
 
-		if (false === file_exists($real_file_path)) {
+		if (false === \file_exists($real_file_path)) {
 			throw new Exception\ConfigFileNotFoundException(
-				sprintf('File \'%s\' not found', $config_file_path)
+				\sprintf('File \'%s\' not found', $config_file_path)
 			);
 		}
 
-		$file_content = file_get_contents(
+		$file_content = \file_get_contents(
 			$real_file_path
 		);
 
-		$decoded_config = json_decode($file_content, true);
+		$decoded_config = \json_decode($file_content, true);
 
-		if (json_last_error() !== JSON_ERROR_NONE) {
+		if (\json_last_error() !== \JSON_ERROR_NONE) {
 			throw new Exception\ConfigLoadingException(
-				sprintf('Config loading failed: %s', json_last_error_msg())
+				Str\format('Config loading failed: %s', \json_last_error_msg())
 			);
 		}
 
@@ -34,7 +36,7 @@ final class Reader implements ReaderInterface {
 		$value = $this->getValueByKey($key);
 		if (is_array($value)) {
 			throw new Exception\LeafIsBranchException(
-				sprintf('Expected \'%s\' to be a leaf but got a branch', $key)
+				Str\format('Expected \'%s\' to be a leaf but got a branch', $key)
 			);
 		}
 		return (string) $value;
@@ -44,7 +46,7 @@ final class Reader implements ReaderInterface {
 		$value = $this->getValueByKey($key);
 		if (!is_array($value)) {
 			throw new Exception\BranchIsLeafException(
-				sprintf('Expected \'%s\' to be a branch but got a leaf', $key)
+				Str\format('Expected \'%s\' to be a branch but got a leaf', $key)
 			);
 		}
 
@@ -57,9 +59,9 @@ final class Reader implements ReaderInterface {
 		if ($config === null) {
 			throw new Exception\ConfigNotLoadedException();
 		}
-		if (!array_key_exists($key, $config)) {
+		if (!C\contains_key($config, $key)) {
 			throw new Exception\LeafNotFoundException(
-				sprintf('Key \'%s\' not found', $key)
+				Str\format('Key \'%s\' not found', $key)
 			);
 		}
 
