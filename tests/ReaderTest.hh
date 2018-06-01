@@ -12,11 +12,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$reader = new Reader();
 
-		expect(
-			function () use ($reader, $filename) {
-				$reader->load($filename);
-			}
-		)
+		expect(() ==> $reader->load($filename))
 		->toThrow(
 			Exception\ConfigFileNotFoundException::class,
 			Str\format('File \'%s\' not found', $filename)
@@ -28,11 +24,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$reader = new Reader();
 
-		expect(
-			function () use ($reader, $filename) {
-				$reader->load($filename);
-			}
-		)
+		expect(() ==> $reader->load($filename))
 		->toThrow(
 			Exception\ConfigLoadingException::class,
 			'Config loading failed: Syntax error'
@@ -42,11 +34,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetLeafThrowsExceptionIfConfigIsNotLoaded(): void {
 		$reader = new Reader();
 
-		expect(
-			function () use ($reader) {
-				$reader->getLeaf('foo-bar');
-			}
-		)
+		expect(() ==> $reader->getLeaf('foo-bar'))
 		->toThrow(
 			Exception\ConfigNotLoadedException::class
 		);
@@ -59,11 +47,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 		$reader = new Reader();
 		$reader->load($filename);
 
-		expect(
-			function () use ($reader, $key) {
-				$reader->getLeaf($key);
-			}
-		)
+		expect(() ==> $reader->getLeaf($key))
 		->toThrow(
 			Exception\LeafNotFoundException::class,
 			Str\format('Key \'%s\' not found', $key)
@@ -77,11 +61,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 		$reader = new Reader();
 		$reader->load($filename);
 
-		expect(
-			function () use ($reader, $key) {
-				$reader->getLeaf($key);
-			}
-		)
+		expect(() ==> $reader->getLeaf($key))
 		->toThrow(
 			Exception\LeafIsBranchException::class,
 			Str\format('Expected \'%s\' to be a leaf but got a branch', $key)
@@ -95,11 +75,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase {
 		$reader = new Reader();
 		$reader->load($filename);
 
-		expect(
-			function () use ($reader, $key) {
-				$reader->getBranch($key);
-			}
-		)
+		expect(() ==> $reader->getBranch($key))
 		->toThrow(
 			Exception\BranchIsLeafException::class,
 			Str\format('Expected \'%s\' to be a branch but got a leaf', $key)

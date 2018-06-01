@@ -5,7 +5,9 @@ use HH\Lib\{Str, C};
 
 final class Reader implements ReaderInterface {
 
-	public function __construct(private ?Map<string, mixed> $config = null): void {
+	public function __construct(
+		private ?dict<string, mixed> $config = null
+	): void {
 	}
 
 	public function load(string $config_file_path): void {
@@ -13,7 +15,7 @@ final class Reader implements ReaderInterface {
 
 		if (false === \file_exists($real_file_path)) {
 			throw new Exception\ConfigFileNotFoundException(
-				\sprintf('File \'%s\' not found', $config_file_path)
+				Str\format('File \'%s\' not found', $config_file_path)
 			);
 		}
 
@@ -29,11 +31,12 @@ final class Reader implements ReaderInterface {
 			);
 		}
 
-		$this->config = new Map($decoded_config);
+		$this->config = dict($decoded_config);
 	}
 
 	public function getLeaf(string $key): string {
 		$value = $this->getValueByKey($key);
+
 		if (is_array($value)) {
 			throw new Exception\LeafIsBranchException(
 				Str\format('Expected \'%s\' to be a leaf but got a branch', $key)
@@ -44,13 +47,14 @@ final class Reader implements ReaderInterface {
 
 	public function getBranch(string $key): ReaderInterface {
 		$value = $this->getValueByKey($key);
+
 		if (!is_array($value)) {
 			throw new Exception\BranchIsLeafException(
 				Str\format('Expected \'%s\' to be a branch but got a leaf', $key)
 			);
 		}
 
-		return new static(new Map($value));
+		return new static(dict($value));
 	}
 
 	private function getValueByKey(string $key): mixed {
