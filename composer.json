@@ -19,8 +19,8 @@
         }
     ],
     "require": {
-        "hhvm": ">=3.24",
-        "hhvm/hsl": "^1.4"
+        "hhvm": ">=3.26",
+        "hhvm/hsl": "^3.26"
     },
     "require-dev": {
         "facebook/fbexpect": "^1"
