@@ -19,11 +19,12 @@
         }
     ],
     "require": {
-        "hhvm": ">=3.26",
-        "hhvm/hsl": "^3.26"
+        "hhvm": ">=3.28",
+        "hhvm/hsl": "^3.28"
     },
     "require-dev": {
-        "facebook/fbexpect": "^1"
+        "usox/hackmock": "dev-master",
+        "hhvm/hhast": "^3.28"
     },
     "autoload": {
         "psr-4": {
@@ -31,6 +32,6 @@
         }
     },
     "scripts": {
-        "tests": "hhvm ./vendor/bin/phpunit -c phpunit.xml"
+        "tests": "vendor/bin/"
     }
 }

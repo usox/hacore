@@ -5,7 +5,7 @@ use function Facebook\FBExpect\expect;
 use HH\Lib\Str;
 use HackPack\HackUnit\Contract\Assert;
 
-class ReaderTest extends \PHPUnit_Framework_TestCase {
+class ReaderTest extends \Facebook\HackTest\HackTest {
 
 	public function testLoadThrowsExceptionIfFileDoesNotExist(): void {
 		$filename = 'some-file-that-does-not-exist';

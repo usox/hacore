@@ -10,5 +10,4 @@ php:
 before_script: composer install
 
 script:
-  - hh_server --check $(pwd)
-  - composer run-script tests
+  - vendor/bin/hacktest tests
