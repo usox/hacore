@@ -23,7 +23,7 @@
         "hhvm/hsl": "^3.28"
     },
     "require-dev": {
-        "usox/hackmock": "dev-master",
+        "usox/hackmock": "^1",
         "hhvm/hhast": "^3.28"
     },
     "autoload": {
@@ -32,6 +32,6 @@
         }
     },
     "scripts": {
-        "tests": "vendor/bin/"
+        "tests": "vendor/bin/hacktest tests"
     }
 }
