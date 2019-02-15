@@ -1,7 +1,16 @@
-<?hh // strict
+#!/usr/bin/env hhvm
+/*
+ *  Copyright (c) 2019-present, Daniel Jakob
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the MIT license found in the
+ *  LICENSE file in the root directory of this source tree.
+ *
+ */
+
 namespace Usox\Hacore;
 
-use HH\Lib\{Str, C};
+use namespace HH\Lib\{Str, C};
 
 final class Reader implements ReaderInterface {
 
@@ -26,8 +35,9 @@ final class Reader implements ReaderInterface {
 		$decoded_config = \json_decode($file_content, true);
 
 		if (\json_last_error() !== \JSON_ERROR_NONE) {
+			$last_error_message = \json_last_error_msg();
 			throw new Exception\ConfigLoadingException(
-				Str\format('Config loading failed: %s', \json_last_error_msg())
+				Str\format('Config loading failed: %s', $last_error_message)
 			);
 		}
 

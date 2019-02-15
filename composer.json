@@ -19,12 +19,13 @@
         }
     ],
     "require": {
-        "hhvm": ">=3.28",
-        "hhvm/hsl": "^3.28"
+        "hhvm": "^4.0",
+        "hhvm/hsl": "^4.0"
     },
     "require-dev": {
-        "usox/hackmock": "^1",
-        "hhvm/hhast": "^3.28"
+        "hhvm/hacktest": "^1.4",
+        "hhvm/hhast": "^4.0",
+        "facebook/fbexpect": "^2"
     },
     "autoload": {
         "psr-4": {
